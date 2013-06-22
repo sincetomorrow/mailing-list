@@ -1,0 +1,160 @@
+body { text-align:center; }
+.nolineheight { height:auto !important; overflow:visible !important; } 
+.top { height:50px; background:#0CF; line-height:50px; color:white; font-size:1.8em; text-align:left; padding-left:20px; }
+.navigation { margin:22px 20px; }
+.iconbt { vertical-align:middle; display:inline-block; }
+.black { color:#000; }
+.blue { color:#09F !important; }
+strong { color:#000; }
+.wrapper { width:800px; text-align:left; margin:0 auto; }
+.autowidth { width:auto !important; display:inline-block; }
+.width12 { width:12px; display:inline-block; }
+.width20 { width:20px; display:inline-block; }
+.width25 { width:25px; display:inline-block; }
+.width30 { width:30px; display:inline-block; }
+.width50 { width:50px; display:inline-block; }
+.width75 { width:75px; display:inline-block; }
+.width100 { width:100px; display:inline-block; }
+.width125 { width:125px; display:inline-block; }
+.width150 { width:150px; display:inline-block; }
+.width200 { width:200px; display:inline-block; }
+.width250 { width:250px; display:inline-block; }
+.width300 { width:300px; display:inline-block; }
+.width400 { width:400px; display:inline-block; }
+.width500 { width:500px; display:inline-block; }
+.navigation a { padding:5px; border:#CFE7F6 thin solid; }
+.navigation a:hover { background:#FF9; }
+.selected { background:#FF0 !important; color:#000 !important; }
+.link:hover { text-decoration:underline; }
+.show {  }
+.more { display:none; }
+.writefile {
+	background:#9F0;
+	color:#666;	
+	display:inline-block;
+	padding:4px;
+	border:thin solid #FFF;
+	margin:10px;
+}
+.writefile:hover { border:thin solid #333; }
+.main {
+	margin:10px;
+	margin-left:50px;
+}
+.main ul li {
+	display:inline-block;
+	border-bottom:thin solid #CCC;
+	line-height:21px;
+	margin-right:40px;
+	padding-left:5px;
+	padding-right:5px;
+}
+.main ul li:hover {
+	background:#FF0;
+}
+.bookmarkmenu li { margin:0px !important; padding-left:0px !important; padding-right:2px !important; }
+.new {
+	background: #CF0;
+	border-top: thin solid black;
+	color: white;
+	padding: 3px 5px 0.9px 6px;
+	margin-right: -0.1px;
+	display: inline-block;
+}
+.new:hover {  }
+.tag {
+	background:#09F;
+	color:#FFF !important;
+	font-size:11px;
+	font-weight:bold;
+	padding:2px 3px;
+	margin-right:2px;	
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -khtml-border-radius: 3px;
+    border-radius: 3px;
+}
+.tag_selected {
+	background:#FFF;
+	color:#09F !important;
+	border:thin solid #09F;
+	font-size:11px;
+	font-weight:bold;
+	padding:2px 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -khtml-border-radius: 3px;
+    border-radius: 3px;
+}
+.tag_folder {
+    -moz-border-radius: 3px 3px 0 0;
+    -webkit-border-radius: 3px 3px 0 0;
+    -khtml-border-radius: 3px 3px 0 0;
+    border-radius: 3px 3px 0 0;
+	background:url(../images/folder.gif) no-repeat;
+	padding-left:20px;
+	padding-right:5px;
+	color:#FFF !important;
+}
+.onofftag {
+	background:#0F0;
+	color:#FFF;
+	font-size:11px;
+	font-weight:bold;
+	margin-right:2px;	
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    -khtml-border-radius: 2px;
+    border-radius: 2px;
+	height:12px;
+	width:12px;
+	display:inline-block;
+	vertical-align:middle;
+}
+.note { color:#0C0; font-size:11px; }
+.greybg { background:#CCC; color:#FFF; font-weight:normal; }
+.greenbg { background:#3F0 !important; color:#FFF; font-weight:normal; }
+.delete { background:#CCC; color:#FFF !important; font-weight:normal; font-size:10px; }
+.delete:hover { background:#000; color:#FFF; font-weight:normal; }
+.edit { background:url(../images/icon_edit.png) no-repeat 0 -12px; width:12px; height:12px; display:inline-block; margin-top:2px; }
+.edit:hover { background-position:0 0; }
+.grey { color:#CCC; }
+.red { color:#C00; }
+.green { color:#090; }
+input[type=text],input[type=password],textarea {
+	width:250px;
+	border:thin solid #CCC;
+	background:#FFF;
+	padding:2px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    -khtml-border-radius: 4px;
+    border-radius: 4px;
+}
+.back {
+	background:#FFFFFF;
+	color:#666;
+	padding:3px 4px;	
+	border:thin solid #9C9;
+}
+.back:hover {
+	background:#6F3;
+	color:#666;
+	border:thin solid #0C0;
+}
+.next {
+	background:#FFFFFF;
+	color:#666;
+	padding:3px 4px;	
+	border:thin solid #000;
+}
+.next:hover {
+	background:#FF9;
+}
+.login {
+	margin:0 auto;
+	margin-top:20px;
+	padding:10px;
+	width:310px;	
+	background:#FF0;
+}
