@@ -21,6 +21,7 @@
 	<form method=\"post\" action='library/email.php'>
 		<input type=\"hidden\" name=\"a\" value='$s'/>
 		<input type=\"hidden\" name=\"id\" value='$id'/>
+		<input type=\"hidden\" name=\"listid\" value='$listid'/>
 		<span class='width75'>E-mail</span><input type='text' name='email' value='$email'/> ";
 		statusDD_1($status);
 		echo "
