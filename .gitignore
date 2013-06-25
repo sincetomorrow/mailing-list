@@ -25,6 +25,8 @@
 *.log
 *.sql
 db_config.php
+_db/mailling_list.sql
+config/db_config_star.php
 
 # OS generated files #
 ######################
