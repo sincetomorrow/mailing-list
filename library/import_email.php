@@ -6,15 +6,16 @@ function isValidEmail($email){
     return (bool)preg_match("`^[a-z0-9!#$%&'*+\/=?^_\`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_\`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$`i", trim($email));
 }
 
+$listid = mysql_real_escape_string($_REQUEST['listid']);
 $status=1; //mysql_real_escape_string($_REQUEST['status']);
 $delimiter=mysql_real_escape_string($_REQUEST['delimiter']);
 if(empty($delimiter)) { $delimiter=","; }
 
+// Gathers emails and explode them, and clean them a bit
 $emails = $_REQUEST[emails];
 $emails = htmlspecialchars($emails);
 $emails = preg_replace('~[\r\n]+~',' ', $emails);
 $emails = explode($delimiter,$emails);
-
 
 $page="emails";
 $table = "emails";
@@ -40,12 +41,27 @@ while($i<$total_emails) {
 		$query0 = "SELECT * FROM $table WHERE email='$email'";
 		$result0 = mysql_query($query0);
 		if(mysql_num_rows($result0)>0) {
+			// Υπάρχει στην βάση το e-mail, οπότε σπρώξτο στην array ότι υπάρχει και αν είναι valid
+			while($row0=mysql_fetch_assoc($result0)) { $emailid=$row0[id]; }
 			array_push($arrExist,array("email"=>$email,"valid"=>$isVald));
+			// Και πρόσθεσε το στο list_email έτσι και αλλιώς αγνοώντας αν υπάρχει error για δεύτερη φορά
+			if(!empty($listid)) {
+				$sql2 = "INSERT INTO  `list_email` VALUES ( '$listid','$emailid','1','1')";
+				$res2=@mysql_query($sql2);
+			}
 		}
 		else {
-			// Insert to database 
+			// Δεν υπάρχει, οπότε το βάζεις στην database 
 			$query="INSERT INTO  `$table` VALUES ( NULL,'$email','NOW()','$status')";
-			$result=mysql_query($query);			
+			$result=@mysql_query($query);
+			// Παίρνεις το emailid	
+			$emailid = mysql_insert_id();
+			// Και πρόσθεσε το στο list_email 
+			if(!empty($listid)) {
+				$sql2 = "INSERT INTO  `list_email` VALUES ( '$listid','$emailid','1','1')";
+				$res2=@mysql_query($sql2);
+			}
+		
 		}
 	}
 	
@@ -63,8 +79,11 @@ while($i<$total_emails) {
 	}
 	$i++;	
 }
+echo "<br/>";
 
-echo "<br/>Total: $total_emails, Same e-mail: " .count($arrExist) .", invalid email: " .count($arrInvalid) ."<br/>
+if(!empty($listid)) { echo "Imported in list ID $listid > "; }
+
+echo "Total: $total_emails, Same e-mail: " .count($arrExist) .", invalid email: " .count($arrInvalid) ."<br/>
 Below are the invalid e-mails:<br/>
 <span class='red'>";
 $i=0;

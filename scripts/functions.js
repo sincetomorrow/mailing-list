@@ -22,5 +22,25 @@ $(".many_emails").submit(function(e) {
 		$(".outcome").html(data);
 	});
 });
+
+$(".email2list").click(function(e) {
+	e.preventDefault();
+	var mc = $(this);
+	var emailid=$(this).attr("emailid");
+	var listid=$(this).attr("listid");
+	var a = $(this).attr("a");
+	var confirmed = '1';
+	
+	$.post("library/list_email.php",{emailid:emailid,listid:listid,a:a,confirmed:confirmed},function(data) {
+		if(a=="add") {
+			mc.attr("a","delete");
+			mc.html("<img src='images/bt_listemail.png'/>");
+		}
+		else if(a=="delete") {
+			mc.attr("a","add");
+			mc.html("<img src='images/bt_add2.png'/>");
+		}
+	});
+});
 	
 });

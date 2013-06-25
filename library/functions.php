@@ -1,5 +1,43 @@
 <? 
-
+// showLists($emailid) 
+function showLists($emailid) {
+	
+	// Query 
+	$sql1 = "SELECT l.*, le.emailid isthere, le.confirmed
+	FROM lists l 
+	LEFT JOIN (SELECT * FROM list_email WHERE emailid='$emailid') le ON l.id=le.listid
+	GROUP BY l.id
+	";
+	$res1 = mysql_query($sql1) or die(mysql_error());
+	$lists="";
+	while($row1 = mysql_fetch_assoc($res1)) {
+		$list_name = $row1[name];
+		$confirmed = $row1[confirmed];
+		$isthere = $row1[isthere];
+		$lists .= "
+			<span class='width40'>&nbsp;</span>
+			<span class='width335' style='text-align:right;font-weight:500;'>$list_name</span>
+			<span class='icons_right'>";
+		if($isthere>0) { 
+			$lists .= "<a href='#' emailid='$emailid' listid='$row1[id]' a='delete' class='iconbt email2list'>
+				<img src='images/bt_listemail.png'/>
+			</a>";
+		}
+		else { 
+			$lists .= "<a href='#' emailid='$emailid' listid='$row1[id]' a='add' class='iconbt email2list'>
+				<img src='images/bt_add2.png'/>
+			</a>";
+		}
+		
+		//if($confirmed==1) { $lists .= "<a href='#' class='iconbt'><img src='images/bt_add2.png'/></a>"; }
+		
+		$lists .= "</span>
+			<br/>";
+	}
+	return $lists;
+}
+				
+				
 // typeDd($t) 
 function typeDd($t) {
 	echo "<select name='type'>";

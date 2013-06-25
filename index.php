@@ -1,10 +1,11 @@
 <?
+$version = "1.1";
 // Menu 
 $menu = array(
 	//array("one"=>"brand",		"many"=>"brands",		"title"=>"Παραγωγοί","url"=>""),
 	array("one"=>"list",		"many"=>"lists",		"title"=>"MAILING LISTS","url"=>""),
-	array("one"=>"email",		"many"=>"emails",		"title"=>"E-MAILS","url"=>"")/*,
-	array("one"=>"",			"many"=>"",				"title"=>"&nbsp;","url"=>""),
+	array("one"=>"email",		"many"=>"emails",		"title"=>"E-MAILS","url"=>""),
+	array("one"=>"",			"many"=>"",				"title"=>"$version","url"=>"")/*,
 	array("one"=>"",			"many"=>"",				"title"=>"Κεντρική Site","url"=>"../"),
 	array("one"=>"",			"many"=>"",				"title"=>"Αποσύνδεση","url"=>"logout.php")*/
 );
@@ -41,15 +42,9 @@ echo "<div class='main'>";
 switch($page) {
 	case "lists": 
 		// Magic query 
-		$query="SELECT SQL_CALC_FOUND_ROWS l.*, COUNT(le.emailid) total
-		FROM lists l
-		LEFT JOIN list_email le ON le.listid=l.id
-		GROUP BY l.id
-		ORDER BY id ASC";
-		$result=mysql_query($query) or die(mysql_error());
-		// Get total results 
-		$total_records = mysql_query("SELECT FOUND_ROWS() as `found_rows`;") or die(mysql_error());
-		while($fr=mysql_fetch_assoc($total_records)) { $tot = $fr[found_rows]; }
+		$sql1="SELECT * FROM lists ORDER BY id ASC";
+		$res1=mysql_query($sql1) or die(mysql_error());
+		$num1 = mysql_num_rows($res1);
 		// Show options 
 		echo "
 		<div class='options inset grey'>
@@ -61,18 +56,26 @@ switch($page) {
 				<span><a href='#'>Import multiple e-mails</a></span>
 			</span>
 		</div>";
+		// Δείξτα 
 		echo "<ul>";
-		while($row=mysql_fetch_assoc($result)) {
-			$name = $row[name];
-			$id = $row[id];
+		while($row1=mysql_fetch_assoc($res1)) {
+			$name = $row1[name];
+			$listid = $row1[id];
+			$id_ = $row1[id];
+			// Get total emails in list 
+			$total_emails = 0;
+			$sql2 = "SELECT COUNT(emailid) total, listid FROM list_email WHERE listid='$listid'";
+			$res2 = mysql_query($sql2) or die(mysql_error());
+			while($row2=mysql_fetch_assoc($res2)) { $total_emails = $row2[total]; }
 			echo "<li>"; //generateTag($row[status]);
 			echo "
-				<span class='width40'><a href='library/list.php?a=delete&id=$row[id]' class='iconbt'><img src='images/bt_delete.png' $confirmdelete/></a></span>
-				<a href='index.php?page=list&id=$row[id]' class='width300'><strong>$row[name]</strong></a>
-				<span class='width50'>
-					<a href='index.php?page=emails&listid=$row[id]'>$row[total]</a>
-					<a href='index.php?page=email&listid=$row[id]' class='iconbt icons_right'><img src='images/bt_add.png'/></a>
+				<span class='width40'><a href='library/list.php?a=delete&id=$id_' class='iconbt'><img src='images/bt_delete.png' $confirmdelete/></a></span>
+				<a href='index.php?page=list&id=$id_' class='width300'><strong>$name</strong></a>
+				<span class='width30'>
+					<a href='index.php?page=emails&listid=$id_'>$total_emails</a>
 				</span>
+				<a href='index.php?page=email&listid=$id_' class='iconbt icons_right show'><img src='images/bt_add.png'/></a>
+				<div class='more'>"; include("views/item/email.php"); echo "</div>
 			</li><br/>";
 		}
 		echo "</ul>";
@@ -96,42 +99,50 @@ switch($page) {
 		$keyword = $_GET[keyword];
 		$listid = $_GET[listid];
 		$is = 0;
-		$lim = "LIMIT 0,50";
+		$lim = "LIMIT 0,20";
+		// If list is defined, get the list name and more, αλλιώς δες απλά πόσα e-mail έχεις
 		if(!empty($listid)) {
-			$sql2 = "SELECT name FROM lists WHERE id='$listid'";
+			// Get list name
+			$sql2 = "SELECT l.name FROM lists l WHERE l.id='$listid'";
 			$res2 = mysql_query($sql2);
-			while($row2 = mysql_fetch_assoc($res2)) {
-				$list_name = $row2[name];	
-			}
+			while($row2 = mysql_fetch_assoc($res2)) { $list_name = $row2[name];	}
+			// Get total emails in list 
+			$total_emails = 0;
+			$sql3 = "SELECT COUNT(emailid) total, listid FROM list_email WHERE listid='$listid'";
+			$res3 = mysql_query($sql3) or die(mysql_error());
+			while($row3=mysql_fetch_assoc($res3)) { $total_emails = $row3[total]; }
+		}
+		else {
+			// Get total emails in list 
+			$total_emails = 0;
+			$sql3 = "SELECT COUNT(email) total FROM emails";
+			$res3 = mysql_query($sql3) or die(mysql_error());
+			while($row3=mysql_fetch_assoc($res3)) { $total_emails = $row3[total]; }
 		}
 		// Magic query 
 		if(!empty($keyword)) { $and1="e.email LIKE '%$keyword%'"; $is++; $lim=""; }
-		if(!empty($listid)) { $and2 = "le.listid='$listid'"; $list=true; $is++; $lim=""; }
+		if(!empty($listid)) { $and2 = "le.listid='$listid'"; $and_="LEFT JOIN list_email le ON le.emailid=e.id"; $list=true; $is++; }
+		if(!empty($listid) && $_GET[all]=="1") { $and2 = "le.listid='$listid'"; $lim=""; }
 		
 		if($is==1) { $and = "WHERE $and1 $and2"; }
 		else if($is==2) { $and = "WHERE $and1 AND $and2"; }
 		else { $and = ""; }
-		
-		$query="SELECT SQL_CALC_FOUND_ROWS e.*, COUNT(le.listid) total
+		$lim = "LIMIT 0,20";
+		$query = "SELECT e.*
 		FROM emails e
-		LEFT JOIN list_email le ON le.emailid=e.id
+		$and_
 		$and
-		GROUP BY e.id
 		ORDER BY e.id DESC
 		$lim";
 		$result=mysql_query($query) or die(mysql_error());
-		// Get total results 
-		$total_records = mysql_query("SELECT FOUND_ROWS() as `found_rows`;") or die(mysql_error());
-		while($fr=mysql_fetch_assoc($total_records)) { $tot = $fr[found_rows]; }
 		// Show options 
-		echo "
-		<div class='options inset grey'>";
+		echo "<div class='options inset grey'>";
 		if(!empty($listid)) {
 			echo "<a href='index.php?page=list&id=$listid' class='title'>$list_name</a>
 			<a href='#' class='iconbt_bigger'><img src='images/bt_download.png'/></a><br/>";
 		}
 		echo "
-			<a href='#' class='dark_grey'>Subscribed: 3400</span>, <a href='#'>Unsubscribed: 100</a>, <a href='#' class='dark_grey'>Total: $tot</a>
+			<a href='#' class='dark_grey'>Subscribed: 3400</span>, <a href='#'>Unsubscribed: 100</a>, <a href='#' class='dark_grey'>Total: $total_emails</a>
 			<br/>
 			<span>
 				<a href='#' class='show green'>Add e-mail</a> / 
@@ -162,53 +173,31 @@ switch($page) {
 					<input type='submit' value='Search'/>
 				</form>
 			</li>
-			<br/>
-		<li>Σύνολο e-mail: " .mysql_num_rows($result) ."</li><br/>";
+			<br/>";
+		echo "<li class='grey'>Showing the latest 20 e-mail</li><br/>";
 		// Δείξε το 
 		while($row=mysql_fetch_assoc($result)) {
 			$email = $row[email];
 			$status = $row[status];
+			// Get total list in which it is in 
+			$total_lists = 0;
+			$sql2 = "SELECT COUNT(listid) total, emailid FROM list_email le WHERE emailid='$row[id]'";
+			$res2 = mysql_query($sql2) or die(mysql_error());
+			while($row2=mysql_fetch_assoc($res2)) { $total_lists = $row2[total]; }
+			
 			echo "<li>"; //generateTag($row[status]);
 			echo "
 				<span class='width40'>
 					<a href='library/email.php?a=delete&id=$row[id]' class='iconbt'><img src='images/bt_delete.png' $confirmdelete/></a>
 					<a href='#' class='iconbt'><img src='images/bt_confirmed.png'/></a>
 				</span>
-				<span class='width300 black'>$row[email]</span>
-				<a href='index.php?page=email&id=$row[id]' class='show width70 black ' style='font-weight:500;'>
-					$row[total] lists <span class='iconbt icons_right'><img src='images/bt_add.png'/></span>
-				</a>
-				<div class='more'>"; 
-			// If listid is defined, show lists on click, Else show the edit email form 
-			// (for the first case, get the lists and put them in a list to be hidden just in case)
-			if(!empty($listid)) {
-				$sql1 = "SELECT l.*, le.emailid isthere, le.confirmed
-				FROM lists l 
-				LEFT JOIN (SELECT * FROM list_email WHERE emailid='$row[id]') le ON l.id=le.listid
-				GROUP BY l.id
-				";
-				$res1 = mysql_query($sql1) or die(mysql_error());
-				$lists="";
-				while($row1 = mysql_fetch_assoc($res1)) {
-					$list_name = $row1[name];
-					$confirmed = $row1[confirmed];
-					$isthere = $row1[isthere];
-					$lists .= "
-						<span class='width40'>&nbsp;</span>
-						<span class='width335' style='text-align:right;font-weight:500;'>$list_name</span>
-						<span class='icons_right'>";
-					if(!empty($isthere)) { $lists .= "<a href='#' class='iconbt'><img src='images/bt_add2.png'/></a>"; }
-					else { $lists .= "<a href='#' class='iconbt'><img src='images/bt_add2list.png'/></a>"; }
-					
-					//if($confirmed==1) { $lists .= "<a href='#' class='iconbt'><img src='images/bt_add2.png'/></a>"; }
-					
-					$lists .= "</span>
-						<br/>";
-				}
-				echo $lists;
-			}
-			else { include("views/item/email.php"); }
-			echo "</div>
+				<span><a href='# 'class='width300 black show'>$row[email]</a><div class='more'>"; include("views/item/email.php"); echo "</div></span>
+				<span>
+					<a href='index.php?page=email&id=$row[id]' class='show width70 black ' style='font-weight:500;'>
+						$total_lists lists <span class='iconbt icons_right'><img src='images/bt_add.png'/></span>
+					</a>
+					<div class='more'>" .showLists($row[id]) ."</div>
+				</span>
 			</li><br/>";
 		}
 		echo "</ul>";

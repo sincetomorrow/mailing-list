@@ -1,6 +1,5 @@
 <?
-	if($_GET[page]!="emails") { echo "<p><a href='index.php?page=emails' class='back'>Πίσω</a></p>"; }
-	if(!empty($id)) {
+	if(!empty($id) && $page!="lists") {
 		$query1="SELECT * FROM emails WHERE id='$id' LIMIT 0,1";
 		$result1=mysql_query($query1) or mysql_error();
 		echo "<ul>";
@@ -23,7 +22,7 @@
 		<input type=\"hidden\" name=\"id\" value='$id'/>
 		<input type=\"hidden\" name=\"listid\" value='$listid'/>
 		<span class='width75'>E-mail</span><input type='text' name='email' value='$email'/> ";
-		statusDD_1($status);
+		//statusDD_1($status);
 		echo "
 		<br/>
 		$e

@@ -20,7 +20,7 @@
 	<form method=\"post\" action='library/list.php'>
 		<input type=\"hidden\" name=\"a\" value='$s'/>
 		<input type=\"hidden\" name=\"id\" value='$id'/>
-		<input type=\"hidden\" name=\"id\" value='$listid'/>
+		<input type=\"hidden\" name=\"listid\" value='$listid'/>
 		<span class='width75'>Όνομα</span><input type='text' name='name'  value='$name'/>";
 		statusDD_1($status);
 		echo "
