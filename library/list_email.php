@@ -17,6 +17,7 @@ switch ($a) {
 				'$listid',
 				'$emailid',
 				'$confirmed',
+				'NOW()',
 				'$status'
 				)";
 		$result=mysql_query($query) or die(mysql_error());

@@ -107,17 +107,27 @@ switch($page) {
 			$res2 = mysql_query($sql2);
 			while($row2 = mysql_fetch_assoc($res2)) { $list_name = $row2[name];	}
 			// Get total emails in list 
-			$total_emails = 0;
+			$subscribed_emails = 0;
 			$sql3 = "SELECT COUNT(emailid) total, listid FROM list_email WHERE listid='$listid'";
 			$res3 = mysql_query($sql3) or die(mysql_error());
-			while($row3=mysql_fetch_assoc($res3)) { $total_emails = $row3[total]; }
+			while($row3=mysql_fetch_assoc($res3)) { $subscribed_emails = $row3[total]; }
 		}
 		else {
-			// Get total emails in list 
+			// Get total emails 
 			$total_emails = 0;
 			$sql3 = "SELECT COUNT(email) total FROM emails";
 			$res3 = mysql_query($sql3) or die(mysql_error());
 			while($row3=mysql_fetch_assoc($res3)) { $total_emails = $row3[total]; }
+			// Get total emails in lists (inverted) 
+			$subscribed_emails = 0;
+			$sql4 = "SELECT COUNT(DISTINCT e.id) total_email 
+			FROM emails e
+			INNER JOIN list_email le ON le.emailid=e.id";
+			
+			$res4 = mysql_query($sql4) or die(mysql_error());
+			while($row4=mysql_fetch_assoc($res4)) { $subscribed_emails = $row4[total_email]; }
+			
+			$unsubscribed_emails = $total_emails-$subscribed_emails;
 		}
 		// Magic query 
 		if(!empty($keyword)) { $and1="e.email LIKE '%$keyword%'"; $is++; $lim=""; }
@@ -137,12 +147,17 @@ switch($page) {
 		$result=mysql_query($query) or die(mysql_error());
 		// Show options 
 		echo "<div class='options inset grey'>";
+		
 		if(!empty($listid)) {
 			echo "<a href='index.php?page=list&id=$listid' class='title'>$list_name</a>
-			<a href='#' class='iconbt_bigger'><img src='images/bt_download.png'/></a><br/>";
+			<a href='#' class='iconbt_bigger'><img src='images/bt_download.png'/></a><br/>
+			<a href='#' class='dark_grey'>Total: $total_emails</span>, <a href='#'>Subscribed: $subscribed_emails</a>, <a href='#' class='grey'>Unsubscribed: $unsubscribed_emails</a>";
+		}
+		else {
+			echo "<a href='#' class='dark_grey'>Total: $total_emails</span>, <a href='#'>Subscribed: $subscribed_emails</a>, <a href='#' class='grey'>Unsubscribed: $unsubscribed_emails</a>";
 		}
 		echo "
-			<a href='#' class='dark_grey'>Subscribed: 3400</span>, <a href='#'>Unsubscribed: 100</a>, <a href='#' class='dark_grey'>Total: $total_emails</a>
+			
 			<br/>
 			<span>
 				<a href='#' class='show green'>Add e-mail</a> / 

@@ -5,6 +5,7 @@ $a=$_REQUEST[a];
 $id=mysql_real_escape_string($_REQUEST[id]);
 $email=mysql_real_escape_string($_REQUEST[email]);
 $status=mysql_real_escape_string($_REQUEST['status']);
+$key = md5(uniqid(rand(), true));
 $page="emails";
 $table = "emails";
 
@@ -14,7 +15,8 @@ switch ($a) {
 				VALUES ( 
 				NULL,
 				'$email',
-				'NOW()',
+				NOW(),
+				'$key',
 				'$status'
 				)";
 		$result=mysql_query($query) or die(mysql_error());

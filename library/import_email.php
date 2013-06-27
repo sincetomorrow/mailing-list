@@ -46,19 +46,21 @@ while($i<$total_emails) {
 			array_push($arrExist,array("email"=>$email,"valid"=>$isVald));
 			// Και πρόσθεσε το στο list_email έτσι και αλλιώς αγνοώντας αν υπάρχει error για δεύτερη φορά
 			if(!empty($listid)) {
-				$sql2 = "INSERT INTO  `list_email` VALUES ( '$listid','$emailid','1','1')";
+				$sql2 = "INSERT INTO  `list_email` VALUES ( '$listid','$emailid','1',NOW(),'1')";
 				$res2=@mysql_query($sql2);
 			}
 		}
 		else {
 			// Δεν υπάρχει, οπότε το βάζεις στην database 
-			$query="INSERT INTO  `$table` VALUES ( NULL,'$email','NOW()','$status')";
+			$key = md5(uniqid(rand(), true));
+			$query="INSERT INTO  `$table` VALUES ( NULL,'$email',NOW(),'$key','$status')";
 			$result=@mysql_query($query);
 			// Παίρνεις το emailid	
 			$emailid = mysql_insert_id();
 			// Και πρόσθεσε το στο list_email 
 			if(!empty($listid)) {
-				$sql2 = "INSERT INTO  `list_email` VALUES ( '$listid','$emailid','1','1')";
+				
+				$sql2 = "INSERT INTO  `list_email` VALUES ( '$listid','$emailid','1',NOW(),'1')";
 				$res2=@mysql_query($sql2);
 			}
 		

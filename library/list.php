@@ -14,6 +14,7 @@ switch ($a) {
 				VALUES ( 
 				NULL,
 				'$name',
+				NOW(),
 				'$status'
 				)";
 		$result=mysql_query($query) or die(mysql_error());

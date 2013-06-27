@@ -9,6 +9,8 @@ body { text-align:center; font-family:'Roboto Slab'; font-weight:300; }
 .iconbt_bigger:hover { border-bottom:none !important; }
 .iconbt_bigger img:hover { margin-top:-17px; }
 .iconbt_bigger img:active { margin-top:-34px; }
+.bt_settings { display:inline-block; height:16px; overflow:hidden; padding:0 !important; float:right; }
+.bt_settings:hover img { margin-top:-16px; }
 
 .black { color:#000 !important; }
 .blue { color:#09F !important; }
@@ -18,7 +20,7 @@ body { text-align:center; font-family:'Roboto Slab'; font-weight:300; }
 .dark_grey { color:#555555 !important; }
 
 strong { color:#000; }
-.wrapper { width:800px; text-align:left; margin:0 auto; }
+.wrapper { width:500px; text-align:left; margin:0 auto; }
 .autowidth { width:auto !important; display:inline-block; }
 .width12 { width:12px; display:inline-block; }
 .width20 { width:20px; display:inline-block; }

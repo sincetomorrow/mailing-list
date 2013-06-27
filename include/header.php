@@ -35,4 +35,5 @@ $page=$_REQUEST[page];
                 $i++;	
             }
             ?>
+            <a href='' class='bt_settings'><img src='images/bt_settings.png'/></a>
         </div>
