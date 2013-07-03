@@ -56,7 +56,7 @@ strong { color:#000; }
 
 .link:hover { text-decoration:underline; }
 .show {  }
-.more { display:none; }
+.more { display:none; border-bottom:3px solid #94B400; padding-bottom:3px; margin-bottom:5px; }
 .writefile {
 	background:#9F0;
 	color:#666;	

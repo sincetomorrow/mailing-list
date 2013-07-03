@@ -1,11 +1,11 @@
 <?
 	if(!empty($id) && $page!="lists") {
-		$query1="SELECT * FROM emails WHERE id='$id' LIMIT 0,1";
-		$result1=mysql_query($query1) or mysql_error();
+		$query3="SELECT * FROM emails WHERE id='$id' LIMIT 0,1";
+		$result3=mysql_query($query3) or mysql_error();
 		echo "<ul>";
-		while($row=mysql_fetch_assoc($result1)) {
-			$email = $row[email];
-			$status = $row[status];
+		while($row3=mysql_fetch_assoc($result3)) {
+			$email = $row3[email];
+			$status = $row3[status];
 		}
 		$s = "update";
 		$e = "<a href='library/email.php?page=email&a=delete&id=$id'><input type='button' value='Διαγραφή' $confirmdelete/></a>

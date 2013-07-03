@@ -211,7 +211,7 @@ switch($page) {
 					<a href='index.php?page=email&id=$row[id]' class='show width70 black ' style='font-weight:500;'>
 						$total_lists lists <span class='iconbt icons_right'><img src='images/bt_add.png'/></span>
 					</a>
-					<div class='more'>" .showLists($row[id]) ."</div>
+					<div class='more'>" .showLists($row['id']) ."</div>
 				</span>
 			</li><br/>";
 		}

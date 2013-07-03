@@ -1,11 +1,11 @@
 <?
 	if(!empty($id)) {
-		$query="SELECT * FROM lists WHERE id='$id' LIMIT 0,1";
-		$result=mysql_query($query) or mysql_error();
+		$query2="SELECT * FROM lists WHERE id='$id' LIMIT 0,1";
+		$result2=mysql_query($query2) or mysql_error();
 		echo "<ul>";
-		while($row=mysql_fetch_assoc($result)) {
-			$name = $row[name];
-			$status = $row[status];
+		while($row2=mysql_fetch_assoc($result2)) {
+			$name = $row2[name];
+			$status = $row2[status];
 		}
 		$s = "update";
 		$e = "<a href='library/list.php?page=lists&a=delete&id=$id'><input type='button' value='Διαγραφή' $confirmdelete/></a>
