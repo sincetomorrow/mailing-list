@@ -11,7 +11,7 @@ $(".show").click(function(e) {
 	e.preventDefault();
 	var mc = $(this).parent().find(".more");
 	//var $mc = $(this).next("exp_content");
-	mc.toggle();
+	mc.slideToggle("fast");
 });
 $(".many_emails").submit(function(e) {
 	e.preventDefault();

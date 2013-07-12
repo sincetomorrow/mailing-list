@@ -11,6 +11,11 @@ body { text-align:center; font-family:'Roboto Slab'; font-weight:300; }
 .iconbt_bigger img:active { margin-top:-34px; }
 .bt_settings { display:inline-block; height:16px; overflow:hidden; padding:0 !important; float:right; }
 .bt_settings:hover img { margin-top:-16px; }
+.searchform {  }
+.searchform input[type='text'] { border:0; border-bottom:1px dotted #94B400; border-left:1px dotted #94B400; border-radius:0; width:140px; }
+.searchform input[type='submit'] { background:url(../images/bt_search.png) no-repeat 0 0; width:12px; height:12px; overflow:hidden; }
+.searchform input[type='submit']:hover { background:url(../images/bt_search.png) no-repeat 0 -12px; }
+.searchform input[type='submit']:active { background:url(../images/bt_search.png) no-repeat 0 -24px; }
 
 .black { color:#000 !important; }
 .blue { color:#09F !important; }
@@ -28,12 +33,14 @@ strong { color:#000; }
 .width30 { width:30px; display:inline-block; }
 .width40 { width:40px; display:inline-block; }
 .width50 { width:50px; display:inline-block; }
+.width60 { width:60px; display:inline-block; }
 .width75 { width:75px; display:inline-block; }
 .width100 { width:100px; display:inline-block; }
 .width125 { width:125px; display:inline-block; }
 .width150 { width:150px; display:inline-block; }
 .width200 { width:200px; display:inline-block; }
 .width250 { width:250px; display:inline-block; }
+.width280 { width:280px; display:inline-block; }
 .width300 { width:300px; display:inline-block; }
 .width335 { width:335px; display:inline-block; }
 .width400 { width:400px; display:inline-block; }

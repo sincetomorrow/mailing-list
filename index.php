@@ -1,5 +1,5 @@
 <?
-$version = "1.1";
+$version = "1.2";
 // Menu 
 $menu = array(
 	//array("one"=>"brand",		"many"=>"brands",		"title"=>"Παραγωγοί","url"=>""),
@@ -14,14 +14,20 @@ require_once("config/init_session.php");
 require_once("include/header.php");
 require_once("library/functions.php");
 require_once("config/init_database.php");
-// Variables 
-$page=$_REQUEST[page];
-$id=$_REQUEST[id];
-$listid=$_REQUEST[listid];
-$message=$_REQUEST[message];
+// Request Variables 
+$page=$_REQUEST['page'];
+$id=$_REQUEST['id'];
+$listid=$_REQUEST['listid'];
+$message=$_REQUEST['message'];
+$keyword = $_REQUEST['keyword'];
+$status = $_REQUEST['status'];
+// Global variables 
 $itemsPerPage=30;
 $root="index.php";
 $confirmdelete = "onclick=\"return confirm('Είσαι σίγουρος;');\"";
+// Make CSV download link 
+$csv_button = "<a href='library/getcsv.php?listid=$listid&keyword=$keyword&status=$status&page=$page&id=$id' class='iconbt_bigger'><img src='images/bt_download.png'/></a>";
+
 // makeString($array) 
 function makeString($array){
 	$string = "index.php?";
@@ -70,11 +76,12 @@ switch($page) {
 			echo "<li>"; //generateTag($row[status]);
 			echo "
 				<span class='width40'><a href='library/list.php?a=delete&id=$id_' class='iconbt'><img src='images/bt_delete.png' $confirmdelete/></a></span>
-				<a href='index.php?page=list&id=$id_' class='width300'><strong>$name</strong></a>
+				<a href='index.php?page=list&id=$id_' class='width280'><strong>$name</strong></a>
 				<span class='width30'>
-					<a href='index.php?page=emails&listid=$id_'>$total_emails</a>
+					<a href='index.php?page=emails&listid=$id_' class='link'>$total_emails</a>
 				</span>
 				<a href='index.php?page=email&listid=$id_' class='iconbt icons_right show'><img src='images/bt_add.png'/></a>
+				<a href='library/getcsv.php?listid=$listid&keyword=$keyword&status=$status&page=$page&id=$id' target='_blank' class='iconbt_bigger'><img src='images/bt_download.png'/></a>
 				<div class='more'>"; include("views/item/email.php"); echo "</div>
 			</li><br/>";
 		}
@@ -176,19 +183,15 @@ switch($page) {
 					<br/>
 				</div>
 			</span>
+			<form class='searchform'>
+				<input type='hidden' name='page' value='$page'/>
+				<input type='hidden' name='listid' value='$listid'/>
+				<input type='text' style='width:220px;' name='keyword' value='$keyword'/>
+				<input type='submit' value='' class='bt_search'/>
+			</form>
 		</div>";
 		// Search 
-		echo "
-		<ul>
-			<li>
-				<form>
-					<input type='hidden' name='page' value='$page'/>
-					<input type='hidden' name='listid' value='$listid'/>
-					<input style='width:220px;' name='keyword' value='$keyword'/>
-					<input type='submit' value='Search'/>
-				</form>
-			</li>
-			<br/>";
+		echo "<ul>";
 		echo "<li class='grey'>Showing the latest 20 e-mail</li><br/>";
 		// Δείξε το 
 		while($row=mysql_fetch_assoc($result)) {
