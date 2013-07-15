@@ -75,7 +75,11 @@ switch($page) {
 			while($row2=mysql_fetch_assoc($res2)) { $total_emails = $row2[total]; }
 			echo "<li>"; //generateTag($row[status]);
 			echo "
-				<span class='width40'><a href='library/list.php?a=delete&id=$id_' class='iconbt'><img src='images/bt_delete.png' $confirmdelete/></a></span>
+				<span class='width40'>
+					<a href='library/list.php?a=delete&id=$id_' class='iconbt' title='Delete list'><img src='images/bt_delete.png' $confirmdelete/></a>
+					<a href='library/list.php?a=duplicate&id=$id_' class='iconbt' title='Duplicate list'><img src='images/bt_duplicate.png'/></a>
+				</span>
+
 				<a href='index.php?page=list&id=$id_' class='width280'><strong>$name</strong></a>
 				<span class='width30'>
 					<a href='index.php?page=emails&listid=$id_' class='link'>$total_emails</a>
