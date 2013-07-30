@@ -8,12 +8,14 @@
 			$status = $row2[status];
 		}
 		$s = "update";
+		$form_title = "Update the name";
 		$e = "<a href='library/list.php?page=lists&a=delete&id=$id'><input type='button' value='Διαγραφή' $confirmdelete/></a>
 				<input type=\"submit\" value=\"Αποθήκευση\" class='button'/>";
 		echo "</ul>";
 	}
 	else {
 		$s = "add";
+		$form_title = "Add a list";
 		$e = "<input type=\"submit\" value=\"Καταχώρηση\" class='button' />";	
 	}
 	echo "
@@ -21,7 +23,8 @@
 		<input type=\"hidden\" name=\"a\" value='$s'/>
 		<input type=\"hidden\" name=\"id\" value='$id'/>
 		<input type=\"hidden\" name=\"listid\" value='$listid'/>
-		<span class='width75'>Όνομα</span><input type='text' name='name'  value='$name'/>";
+		<span class='width150'>$form_title</span><br/>
+		<input type='text' name='name'  value='$name'/>";
 		statusDD_1($status);
 		echo "
 		<br/>

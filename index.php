@@ -1,5 +1,5 @@
 <?
-$version = "1.2";
+$version = "1.3";
 // Menu 
 $menu = array(
 	//array("one"=>"brand",		"many"=>"brands",		"title"=>"Παραγωγοί","url"=>""),
@@ -42,7 +42,9 @@ function makeString($array){
 	return $string;
 }
 $getstring = makeString($_GET);
+$settings_div = "<div id='settings'>You clicked the settings</div>";
 
+echo $settings_div;
 echo "<div class='main'>";
 
 switch($page) {
@@ -79,8 +81,10 @@ switch($page) {
 					<a href='library/list.php?a=delete&id=$id_' class='iconbt' title='Delete list'><img src='images/bt_delete.png' $confirmdelete/></a>
 					<a href='library/list.php?a=duplicate&id=$id_' class='iconbt' title='Duplicate list'><img src='images/bt_duplicate.png'/></a>
 				</span>
-
-				<a href='index.php?page=list&id=$id_' class='width280'><strong>$name</strong></a>
+				<a href='index.php?page=list&id=$id_' class='width280'>
+					<span class='iconbt'><img src='images/bt_edit.png'/></span>
+					<strong>$name</strong>
+				</a>
 				<span class='width30'>
 					<a href='index.php?page=emails&listid=$id_' class='link'>$total_emails</a>
 				</span>
@@ -133,7 +137,9 @@ switch($page) {
 			$subscribed_emails = 0;
 			$sql4 = "SELECT COUNT(DISTINCT e.id) total_email 
 			FROM emails e
-			INNER JOIN list_email le ON le.emailid=e.id";
+			INNER JOIN list_email le ON le.emailid=e.id
+			INNER JOIN lists l ON l.id=le.listid
+			";
 			
 			$res4 = mysql_query($sql4) or die(mysql_error());
 			while($row4=mysql_fetch_assoc($res4)) { $subscribed_emails = $row4[total_email]; }
@@ -168,7 +174,6 @@ switch($page) {
 			echo "<a href='#' class='dark_grey'>Total: $total_emails</span>, <a href='#'>Subscribed: $subscribed_emails</a>, <a href='#' class='grey'>Unsubscribed: $unsubscribed_emails</a>";
 		}
 		echo "
-			
 			<br/>
 			<span>
 				<a href='#' class='show green'>Add e-mail</a> / 
@@ -201,19 +206,29 @@ switch($page) {
 		while($row=mysql_fetch_assoc($result)) {
 			$email = $row[email];
 			$status = $row[status];
+			$id = $row[id];
 			// Get total list in which it is in 
 			$total_lists = 0;
-			$sql2 = "SELECT COUNT(listid) total, emailid FROM list_email le WHERE emailid='$row[id]'";
-			$res2 = mysql_query($sql2) or die(mysql_error());
-			while($row2=mysql_fetch_assoc($res2)) { $total_lists = $row2[total]; }
+			$sql5 = "SELECT le.listid, le.emailid 
+			FROM list_email le
+			INNER JOIN lists l ON l.id=le.listid
+			WHERE le.emailid='$row[id]'";
+			$res5 = mysql_query($sql5) or die(mysql_error());
+			$total_lists = mysql_num_rows($res5);
 			
 			echo "<li>"; //generateTag($row[status]);
 			echo "
 				<span class='width40'>
 					<a href='library/email.php?a=delete&id=$row[id]' class='iconbt'><img src='images/bt_delete.png' $confirmdelete/></a>
-					<a href='#' class='iconbt'><img src='images/bt_confirmed.png'/></a>
 				</span>
-				<span><a href='# 'class='width300 black show'>$row[email]</a><div class='more'>"; include("views/item/email.php"); echo "</div></span>
+				<span>
+					<a href='# 'class='width300 black show'>
+						<span class='iconbt'><img src='images/bt_edit.png'/></span>
+						$row[email]
+					</a>
+					<div class='more'>"; include("views/item/email.php"); 
+					echo "</div>
+				</span>
 				<span>
 					<a href='index.php?page=email&id=$row[id]' class='show width70 black ' style='font-weight:500;'>
 						$total_lists lists <span class='iconbt icons_right'><img src='images/bt_add.png'/></span>

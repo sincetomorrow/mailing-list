@@ -42,5 +42,10 @@ $(".email2list").click(function(e) {
 		}
 	});
 });
-	
+
+$(".bt_settings").click(function(e) {
+	e.preventDefault();
+	$("#settings").slideToggle("fast");
+});
+
 });

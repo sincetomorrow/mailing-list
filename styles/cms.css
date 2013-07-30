@@ -1,5 +1,7 @@
 body { text-align:center; font-family:'Roboto Slab'; font-weight:300; }
 .nolineheight { height:auto !important; overflow:visible !important; } 
+#settings { margin:0px 40px; padding:10px; display:none; border-bottom:2px solid #C00; }
+/*.more form { padding:10px 60px; } */
 
 /* Icons */
 .iconbt { vertical-align:middle; display:inline-block; height:12px; overflow:hidden; }
